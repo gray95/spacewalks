@@ -3,6 +3,7 @@ import json
 import datetime as dt
 import matplotlib.pyplot as plt
 import pandas as pd
+import sys
 
 def main(input_file, output_file, graph_file):
     print("--START--")
@@ -33,7 +34,7 @@ def read_json_to_dataframe(input_file):
     Returns:
         eva_df (pd.Dataframe): cleaned up data in a pandas dataframe.
     """
-    print(f"reading JSON file from {input_file.name}")
+    print(f"reading JSON file from {input_file}")
     df = pd.read_json(input_file, convert_dates=['date'], encoding='ascii')
     df['eva'] = df['eva'].astype(float)
     # remove rows which don't have duration or date entries
@@ -48,7 +49,7 @@ def write_dataframe_to_csv(df, output_file):
         df (pandas.Dataframe): data to be written
         output_file (file or string): location to write data to
     """
-    print(f"converting json to csv and writing to {output_file.name}")
+    print(f"converting json to csv and writing to {output_file}")
     df.to_csv(output_file, index=False, encoding='utf-8')
 
 def plot_cumulative_time_in_space(df, graph_file):
@@ -104,8 +105,14 @@ def add_duration_hours(df):
 
 if __name__ == "__main__":
     # Data source: https://data.nasa.gov/resource/eva.json (with modifications)
-    input_file = open('./eva-data.json', 'r', encoding='ascii')
-    output_file = open('./eva-data.csv', 'w', encoding='utf-8')
-    graph_file = './cumulative_eva_graph.png'
+    if len(sys.argv) < 3:
+        input_file = open('./data/eva-data.json', 'r', encoding='ascii')
+        output_file = open('./results/eva-data.csv', 'w', encoding='utf-8')
+        print("Using default input and output files")
+    else:
+        input_file = sys.argv[1]
+        output_file = sys.argv[2]
+        print("using user-defined input and output filenames")
+    graph_file = './results/cumulative_eva_graph.png'
 
     main(input_file, output_file, graph_file)
