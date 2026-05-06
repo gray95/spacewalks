@@ -1,2 +1,4 @@
 venv_spacewalks/
 **/.DS_Store
+data/
+results/
