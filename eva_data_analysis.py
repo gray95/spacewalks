@@ -5,7 +5,17 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 def read_json_to_dataframe(input_file):
-    print(f"reading JSON file: {input_file}")
+    """
+    Read the data from a JSON file into a pandas dataframe.
+    Cleans the data by removing any rows where the duration/date is missing.
+
+    Args:
+        input_file (file or string): File object or path to JSON file.
+
+    Returns:
+        eva_df (pd.Dataframe): cleaned up data in a pandas dataframe.
+    """
+    print(f"reading JSON file from {input_file.name}")
     df = pd.read_json(input_file, convert_dates=['date'], encoding='ascii')
     df['eva'] = df['eva'].astype(float)
     # remove rows which don't have duration or date entries
@@ -13,10 +23,24 @@ def read_json_to_dataframe(input_file):
     return df
 
 def write_dataframe_to_csv(df, output_file):
-    print(f"converting json to csv and writing to: {output_file}")
+    """
+    Writes pandas dataframe to csv file.
+
+    Args:
+        df (pandas.Dataframe): data to be written
+        output_file (file or string): location to write data to
+    """
+    print(f"converting json to csv and writing to {output_file.name}")
     df.to_csv(output_file, index=False, encoding='utf-8')
 
 def plot_cumulative_time_in_space(df, graph_file):
+    """
+    Plot the cumulative eva time against date
+
+    Args:
+        df (pandas.Dataframe): eva data
+        graph_file (file or string): location to save figure to
+    """
     # plot cumulative eva time against date
     print("plotting cumulative time in space")
     plt.plot(df['date'], df['cumulative_time'], 'ko-')
