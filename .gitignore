@@ -1,6 +1,6 @@
 venv_spacewalks/
 **/.DS_Store
 results/
-**.pyc
+**/*.pyc
 **/__pycache__/
 .coverage
